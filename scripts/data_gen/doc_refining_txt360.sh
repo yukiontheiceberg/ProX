@@ -1,12 +1,13 @@
 #!/bin/bash
 #SBATCH --job-name=prox_doc_refining_xs
-#SBATCH --partition=higherprio
+#SBATCH --partition=mbzuai
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:8
 
 source /mbz/users/yuqi.wang/miniconda3/bin/activate refining
 
 export NGPU=8
+export HF_TOKEN=
 cmd="
 for i in \$(seq 0 \$((NGPU-1))); do
     TOTAL_SPLIT=1 \\
