@@ -97,6 +97,7 @@ def main(args):
         f.write(org_file_path + "\n")
     elapsed = timeit.default_timer() - start_time
     if c != 0:
+        print(l)
         print(f"refining time elapsed for {org_file_path}: {elapsed:.4f}s {elapsed/l:.2f}char/s/gpu")
         print(f"{c} docs in total, dropped {drop/c:.2%} documents")
 
