@@ -1,11 +1,12 @@
 import os
 import subprocess
+import time
 
 
 SOURCE_PATH = "/mbz/shared/pretraining-data/raw_data/TxT360_Final/common-crawl/"
 DEST_PATH = "/mbz/users/yuqi.wang/datasets/prox/txt360"
 PROGRESS_PATH = "/mbz/users/yuqi.wang/ProX/prox_progress"
-NNODES = 40
+NNODES = 250
 
 with open(PROGRESS_PATH, "r") as f:
     processed = f.read().splitlines()
@@ -28,4 +29,6 @@ for d1 in os.listdir(SOURCE_PATH):
                 NJOBS += 1
                 doc_list = []
                 if NJOBS == NNODES:
-                    exit()
+                    print(f"submitted {NJOBS}, sleep for 2hrs...")
+                    time.sleep(2 * 60 * 60)
+                    NJOBS = 0

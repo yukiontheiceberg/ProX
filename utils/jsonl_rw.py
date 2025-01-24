@@ -73,6 +73,11 @@ class JsonlWriter:
         Writes out each item in the given batch as a separate JSON line
         to the temporary file.
         """
+        if not isinstance(batch, list):
+            raise TypeError("batch must be a list")
+        for item in batch:
+            if not isinstance(item, dict):
+                raise TypeError("Each item in batch must be a dictionary")
         for doc in batch:
             line = orjson.dumps(doc, option=orjson.OPT_APPEND_NEWLINE)
             self.file.write(line)

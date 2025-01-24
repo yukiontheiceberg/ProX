@@ -4,7 +4,7 @@
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:8
 
-source /mbz/users/yuqi.wang/miniconda3/bin/activate refining
+source /mbz/users/yuqi.wang/miniconda3/bin/activate refining_cloned
 
 export NGPU=8
 export HF_TOKEN=
@@ -19,6 +19,7 @@ for i in \$(seq 0 \$((NGPU-1))); do
         --limit -1 \\
         --model_path gair-prox/web-doc-refining-lm \\
         --config_path data_gen/configs/apply_doc_refining.yaml \\
+        --batch_size 4096 \\
         --data_path $1 \\
         > /mbz/users/yuqi.wang/ProX/logging/apply_doc_refining_txt360_${SLURM_JOB_ID}_\${i}.log 2>&1 &
 done

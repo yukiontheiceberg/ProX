@@ -85,13 +85,16 @@ def main(args):
                     outputs = [item.outputs[0].text.strip(" ") for item in outputs]
                     assert len(outputs) == len(texts)
                     c += len(outputs)
+                    drop_lines, keep_lines = [], []
                     for i, output in enumerate(outputs):
                         text = execute_meta_operations(texts[i], output)
                         if not text:
                             drop += 1
-                            drop_writer.write_batch(texts[i] + "\n")
+                            drop_lines.append(batch[i])
                         else:
-                            keep_writer.write_batch(texts[i] + "\n")
+                            keep_lines.append(batch[i])
+                    drop_writer.write_batch(drop_lines)
+                    keep_writer.write_batch(keep_lines)
     with open(PROGRESS_PATH, "a") as f:
         f.write(org_file_path + "\n")
     elapsed = timeit.default_timer() - start_time
