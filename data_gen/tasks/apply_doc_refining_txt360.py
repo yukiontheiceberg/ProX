@@ -23,7 +23,6 @@ CUDA_DEVICE = int(os.environ["CUDA_VISIBLE_DEVICES"])
 TOTAL_SPLIT = int(os.environ["TOTAL_SPLIT"])
 DEST_PATH = "/mbz/users/yuqi.wang/datasets/prox/txt360"
 PROGRESS_PATH = "/mbz/users/yuqi.wang/ProX/prox_progress"
-BATCH_SIZE = 128
 
 
 
@@ -59,7 +58,7 @@ def main(args):
     c, l, drop = 0, 0, 0
     with JsonlWriter(output_filename=dest_keep_gz_path, compression="gzip") as keep_writer:
         with JsonlWriter(output_filename=dest_drop_gz_path, compression="gzip") as drop_writer:
-            with JsonlReader(org_file_path, compression="gzip", batch_size=BATCH_SIZE) as reader:
+            with JsonlReader(org_file_path, compression="gzip", batch_size=args.batch_size) as reader:
                 for bi, batch in enumerate(tqdm(reader, desc="Reading data")):
                     rets, texts = [], []
                     for sample in tqdm(batch, total=len(batch), unit="tokenizing"):
@@ -98,7 +97,7 @@ def main(args):
     elapsed = timeit.default_timer() - start_time
     if c != 0:
         print(l)
-        print(f"refining time elapsed for {org_file_path}: {elapsed:.4f}s {elapsed/l:.2f}char/s/gpu")
+        print(f"refining time elapsed for {org_file_path}: {elapsed:.4f}s")
         print(f"{c} docs in total, dropped {drop/c:.2%} documents")
 
 
